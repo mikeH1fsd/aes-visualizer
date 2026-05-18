@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>AES Visualizer</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- TITLE -->
+
+    <h1 class="main-title">
+        AES Encryption / Decryption Tool
+    </h1>
+
+    <!-- MAIN LAYOUT -->
+
+    <div class="main-layout">
+
+        <!-- LEFT PANEL -->
+
+        <div class="left-panel">
+
+            <!-- OPERATION -->
+
+            <div class="form-group">
+
+                <label>Operation</label>
+
+                <div class="button-group">
+
+                    <button class="toggle-btn active"
+                            data-operation="1"
+                            id="encryptModeBtn">
+
+                        Encrypt
+
+                    </button>
+
+                    <button class="toggle-btn"
+                            data-operation="2"
+                            id="decryptModeBtn">
+
+                        Decrypt
+
+                    </button>
+
+                </div>
+
+            </div>
+
+            <!-- INPUT FORMAT -->
+
+            <div class="form-group">
+
+                <label>Input Data Format</label>
+
+                <div class="button-group">
+
+                    <button class="toggle-btn active"
+                            data-format="1">
+
+                        Plain Text
+
+                    </button>
+
+                    <button class="toggle-btn"
+                            data-format="2">
+
+                        HEX
+
+                    </button>
+
+                    <button class="toggle-btn"
+                            data-format="3">
+
+                        Base64
+
+                    </button>
+
+                </div>
+
+            </div>
+
+            <!-- DATA -->
+
+            <div class="form-group">
+
+                <label id="dataLabel">
+
+                    Plaintext / Ciphertext
+
+                </label>
+
+                <textarea id="dataInput"
+                          rows="7"
+                          placeholder="Enter data here..."></textarea>
+
+            </div>
+
+            <!-- SECRET KEY -->
+
+            <div class="form-group">
+
+                <label>Secret Key</label>
+
+                <input type="text"
+                       id="secretKey"
+                       placeholder="Enter AES key">
+
+            </div>
+
+            <!-- KEY SIZE -->
+
+            <div class="form-group">
+
+                <label>AES Key Type</label>
+
+                <div class="button-group">
+
+                    <button class="toggle-btn active"
+                            data-keysize="1">
+
+                        AES-128
+
+                    </button>
+
+                    <button class="toggle-btn"
+                            data-keysize="2">
+
+                        AES-192
+
+                    </button>
+
+                    <button class="toggle-btn"
+                            data-keysize="3">
+
+                        AES-256
+
+                    </button>
+
+                </div>
+
+            </div>
+
+            <!-- MODE -->
+
+            <div class="form-group">
+
+                <label>Block Cipher Mode</label>
+
+                <div class="button-group">
+
+                    <button class="toggle-btn active"
+                            data-mode="1">
+
+                        ECB
+
+                    </button>
+
+                    <button class="toggle-btn"
+                            data-mode="2">
+
+                        CBC
+
+                    </button>
+
+                </div>
+
+            </div>
+
+            <!-- IV -->
+
+            <div class="form-group"
+                 id="ivContainer">
+
+                <label>Initialization Vector (IV)</label>
+
+                <input type="text"
+                       id="ivInput"
+                       placeholder="Optional for CBC">
+
+            </div>
+
+            <!-- ACTION BUTTONS -->
+
+            <div class="action-buttons">
+
+                <button id="processBtn"
+                        class="main-btn">
+
+                    PROCESS AES
+
+                </button>
+
+                <button id="clearBtn"
+                        class="secondary-btn">
+
+                    CLEAR
+
+                </button>
+
+            </div>
+
+        </div>
+
+        <!-- RIGHT PANEL -->
+
+        <div class="right-panel">
+
+            <h2>Output Result</h2>
+
+            <<div class="result-container">
+
+    <!-- STATUS -->
+
+    <div class="result-box">
+
+        <label>Status</label>
+
+        <input type="text"
+               id="resultStatus"
+               readonly>
+
+    </div>
+
+    <!-- AES MODE -->
+
+    <div class="result-box">
+
+        <label>AES Mode</label>
+
+        <input type="text"
+               id="resultMode"
+               readonly>
+
+    </div>
+
+    <!-- HEX -->
+
+    <div class="result-box">
+
+        <label>HEX Output</label>
+
+        <textarea id="resultHex"
+                  rows="6"
+                  readonly></textarea>
+
+    </div>
+
+    <!-- BASE64 -->
+
+    <div class="result-box">
+
+        <label>Base64 Output</label>
+
+        <textarea id="resultBase64"
+                  rows="6"
+                  readonly></textarea>
+
+    </div>
+
+    <!-- ASCII -->
+
+    <div class="result-box">
+
+        <label>ASCII Output</label>
+
+        <textarea id="resultAscii"
+                  rows="6"
+                  readonly></textarea>
+
+    </div>
+
+</div>
+
+        </div>
+
+    </div>
+
+    <!-- VISUALIZATION TABS -->
+
+    <div class="tabs-container">
+
+        <div class="tabs">
+
+            <button class="tab-btn active"
+                    data-tab="roundView">
+
+                Round View
+
+            </button>
+
+            <button class="tab-btn"
+                    data-tab="blockView">
+
+                Block View
+
+            </button>
+
+            <button class="tab-btn"
+                    data-tab="aboutView">
+
+                About
+
+            </button>
+
+        </div>
+
+        <!-- ROUND VIEW -->
+
+        <<div class="round-toolbar">
+
+    <!-- BLOCK SELECT -->
+
+    <div class="select-group">
+
+        <label>Select Block</label>
+
+        <select id="blockSelect"></select>
+
+    </div>
+
+    <!-- ROUND SELECT -->
+
+    <div class="select-group">
+
+        <label>Select Round</label>
+
+        <select id="roundSelect"></select>
+
+    </div>
+
+</div>
+
+<!-- ROUND CONTENT -->
+
+<div id="roundContainer"></div>
+
+        <!-- BLOCK VIEW -->
+
+        <div id="blockView"
+             class="tab-content">
+
+            <div id="blockContainer"></div>
+
+        </div>
+
+        <!-- ABOUT -->
+
+        <div id="aboutView"
+             class="tab-content">
+
+            <div class="about-box">
+
+                <h2>Advanced Encryption Standard (AES)</h2>
+
+                <p>
+                    AES is a symmetric encryption algorithm
+                    standardized by NIST.
+                </p>
+
+                <p>
+                    This visualization tool supports:
+                </p>
+
+                <ul>
+
+                    <li>AES-128</li>
+
+                    <li>AES-192</li>
+
+                    <li>AES-256</li>
+
+                    <li>ECB Mode</li>
+
+                    <li>CBC Mode</li>
+
+                    <li>Round-by-round visualization</li>
+
+                    <li>Block chaining visualization</li>
+
+                </ul>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script src="{{ url_for('static', filename='app.js') }}"></script>
+
+</body>
+
+</html>
