@@ -627,3 +627,67 @@ textarea{
 
     box-shadow:0 0 15px #00ffe1;
 }
+
+.aes-matrix{
+
+    display:grid;
+
+    grid-template-columns:repeat(4, 70px);
+
+    gap:8px;
+
+    margin-top:15px;
+}
+
+.aes-matrix td{
+
+    background:#1e293b;
+
+    border:1px solid #334155;
+
+    border-radius:8px;
+
+    padding:12px;
+
+    text-align:center;
+
+    font-family:monospace;
+
+    font-size:15px;
+
+    transition:0.2s;
+}
+
+.aes-matrix td:hover{
+
+    background:#38bdf8;
+
+    color:#0f172a;
+
+    transform:scale(1.05);
+}
+
+.key-row{
+    display:flex;
+    gap:10px;
+}
+
+.key-row input{
+    flex:1;
+}
+
+#generateKeyBtn{
+    padding:12px 18px;
+    border:none;
+    border-radius:10px;
+    background:#00c3ff;
+    color:#000;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+#generateKeyBtn:hover{
+    opacity:0.9;
+}
+
+

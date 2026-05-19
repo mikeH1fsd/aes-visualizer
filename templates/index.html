@@ -112,15 +112,31 @@
 
             <!-- SECRET KEY -->
 
-            <div class="form-group">
+            
+            <!-- SECRET KEY -->
 
-                <label>Secret Key</label>
+		<div class="form-group">
 
-                <input type="text"
-                       id="secretKey"
-                       placeholder="Enter AES key">
+		    <label>Secret Key</label>
 
-            </div>
+		    <div class="key-row">
+
+			<input type="text"
+			       id="secretKey"
+			       placeholder="Leave blank to auto generate">
+
+			<button type="button"
+				id="generateKeyBtn">
+
+			    Random
+			</button>
+
+		    </div>
+
+		</div>
+		    
+	
+
 
             <!-- KEY SIZE -->
 
@@ -222,7 +238,7 @@
 
             <h2>Output Result</h2>
 
-            <<div class="result-container">
+            <div class="result-container">
 
     <!-- STATUS -->
 
@@ -292,56 +308,128 @@
 
     <!-- VISUALIZATION TABS -->
 
-    <div class="tabs-container">
+<div class="tabs-container">
 
-        <div class="tabs">
+    <!-- TAB BUTTONS -->
 
-            <button class="tab-btn active"
-                    data-tab="roundView">
+    <div class="tabs">
 
-                Round View
+        <button class="tab-btn active"
+                data-tab="roundView">
 
-            </button>
+            Round View
 
-            <button class="tab-btn"
-                    data-tab="blockView">
+        </button>
 
-                Block View
+        <button class="tab-btn"
+                data-tab="blockView">
 
-            </button>
+            Block View
 
-            <button class="tab-btn"
-                    data-tab="aboutView">
+        </button>
 
-                About
+        <button class="tab-btn"
+                data-tab="aboutView">
 
-            </button>
+            About
+
+        </button>
+
+    </div>
+
+    <!-- =========================
+         ROUND VIEW
+    ========================== -->
+
+    <div id="roundView"
+         class="tab-content active">
+
+        <!-- TOOLBAR -->
+
+        <div class="round-toolbar">
+
+            <div class="select-group">
+
+                <label>Select Block</label>
+
+                <select id="blockSelect"></select>
+
+            </div>
+
+            <div class="select-group">
+
+                <label>Select Round</label>
+
+                <select id="roundSelect"></select>
+
+            </div>
 
         </div>
 
-        <!-- ROUND VIEW -->
+        <!-- ROUND CONTENT -->
 
-        <<div class="round-toolbar">
-
-    <!-- BLOCK SELECT -->
-
-    <div class="select-group">
-
-        <label>Select Block</label>
-
-        <select id="blockSelect"></select>
+        <div id="roundContainer"></div>
 
     </div>
 
-    <!-- ROUND SELECT -->
+    <!-- =========================
+         BLOCK VIEW
+    ========================== -->
 
-    <div class="select-group">
+    <div id="blockView"
+         class="tab-content">
 
-        <label>Select Round</label>
-
-        <select id="roundSelect"></select>
+        <div id="blockContainer"></div>
 
     </div>
+
+    <!-- =========================
+         ABOUT VIEW
+    ========================== -->
+
+    <div id="aboutView"
+         class="tab-content">
+
+        <div class="about-box">
+
+            <h2>
+                Advanced Encryption Standard (AES)
+            </h2>
+
+            <p>
+                AES is a symmetric encryption algorithm
+                standardized by NIST.
+            </p>
+
+            <p>
+                This visualization tool supports:
+            </p>
+
+            <ul>
+
+                <li>AES-128</li>
+
+                <li>AES-192</li>
+
+                <li>AES-256</li>
+
+                <li>ECB Mode</li>
+
+                <li>CBC Mode</li>
+
+                <li>Round-by-round visualization</li>
+
+                <li>Block chaining visualization</li>
+
+            </ul>
+
+        </div>
+
+    </div>
+
+</div>
+
+    
 
 </div>
 

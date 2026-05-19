@@ -155,7 +155,18 @@ async function processAES(){
 
     const dataInput = document.getElementById("dataInput").value;
 
-    const secretKey = document.getElementById("secretKey").value;
+	let secretKey =
+	    document.getElementById("secretKey").value;
+
+	/* AUTO GENERATE IF EMPTY */
+
+	if(secretKey.trim() === ""){
+
+	    generateRandomKey();
+
+	    secretKey =
+		document.getElementById("secretKey").value;
+	}
 
     const ivInput = document.getElementById("ivInput").value;
 
@@ -406,29 +417,57 @@ function renderBlockView(result){
 /* =====================================================
    MATRIX RENDER
 ===================================================== */
-
 function renderMatrix(hexString){
 
-    if(!hexString) return "";
+    if(!hexString){
 
-    const bytes = splitHex(hexString);
+        return "";
+    }
+
+    /*
+        Convert:
+        AABBCCDDEEFF...
+        ->
+        ["AA","BB","CC"...]
+    */
+
+    const bytes =
+        hexString.match(/.{1,2}/g) || [];
+
+    /*
+        AES STATE
+        COLUMN-MAJOR
+
+        [ 0  4  8 12 ]
+        [ 1  5  9 13 ]
+        [ 2  6 10 14 ]
+        [ 3  7 11 15 ]
+    */
 
     let html = `
-        <div class="matrix-grid">
+        <table class="aes-matrix">
     `;
 
-    bytes.forEach(byte => {
+    for(let row = 0; row < 4; row++){
 
-        html += `
-            <div class="matrix-cell glow">
+        html += "<tr>";
 
-                ${byte}
+        for(let col = 0; col < 4; col++){
 
-            </div>
-        `;
-    });
+            const index =
+                col * 4 + row;
 
-    html += `</div>`;
+            html += `
+                <td>
+                    ${bytes[index] || "00"}
+                </td>
+            `;
+        }
+
+        html += "</tr>";
+    }
+
+    html += "</table>";
 
     return html;
 }
@@ -463,13 +502,20 @@ function clearAll(){
 
     document.getElementById("ivInput").value = "";
 
-    document.getElementById("outputArea").value = "";
+    document.getElementById("resultHex").value = "";
+
+    document.getElementById("resultBase64").value = "";
+
+    document.getElementById("resultAscii").value = "";
+
+    document.getElementById("resultStatus").value = "";
+
+    document.getElementById("resultMode").value = "";
 
     document.getElementById("roundContainer").innerHTML = "";
 
     document.getElementById("blockContainer").innerHTML = "";
 }
-
 /* =====================================================
    TABS
 ===================================================== */
@@ -552,26 +598,91 @@ function renderSingleRound(
             </div>
     `;
 
-    Object.keys(round).forEach(key => {
+    const orderedSteps = [
 
-        if(
-            key === "round" ||
-            key === "type"
-        ) return;
+    "SubBytes",
+    "ShiftRows",
+    "MixColumns",
+    "AddRoundKey",
+
+    "InvSubBytes",
+    "InvShiftRows",
+    "InvMixColumns",
+    "AddRoundKey_Inv"
+    ];
+    
+    
+/* RENDER THEO THỨ TỰ AES */
+
+orderedSteps.forEach(step => {
+
+    if(round[step]){
 
         html += `
             <div class="matrix-wrapper">
 
-                <h3>${key}</h3>
+                <h3>${step}</h3>
 
-                ${renderMatrix(round[key])}
+                ${renderMatrix(round[step])}
 
             </div>
         `;
-    });
+    }
+});  
 
+    
     html += `</div>`;
 
     container.innerHTML = html;
+}
+
+/* =========================================
+   RANDOM AES KEY
+========================================= */
+/* =========================================
+   RANDOM AES KEY
+========================================= */
+
+/* =========================================
+   RANDOM AES KEY
+========================================= */
+
+document
+    .getElementById("generateKeyBtn")
+    .addEventListener("click", generateRandomKey);
+
+function generateRandomKey(){
+
+    let length = 16;
+
+    /*
+        AES-128 => 16 bytes
+        AES-192 => 24 bytes
+        AES-256 => 32 bytes
+    */
+
+    if(currentKeySize === "2"){
+
+        length = 24;
+    }
+
+    else if(currentKeySize === "3"){
+
+        length = 32;
+    }
+
+    const chars =
+        "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+    let key = "";
+
+    for(let i = 0; i < length; i++){
+
+        key += chars.charAt(
+            Math.floor(Math.random() * chars.length)
+        );
+    }
+
+    document.getElementById("secretKey").value = key;
 }
 
