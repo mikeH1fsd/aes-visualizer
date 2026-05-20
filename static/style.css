@@ -690,4 +690,17 @@ textarea{
     opacity:0.9;
 }
 
+.key-expansion-toolbar{
+
+    margin-bottom: 20px;
+}
+
+#keyExpansionContainer{
+
+    display: flex;
+
+    flex-wrap: wrap;
+
+    gap: 20px;
+}
 

@@ -20,6 +20,8 @@ document.addEventListener("DOMContentLoaded", () => {
     setupTabs();
 
     setupActions();
+    
+    setupKeyExpansion();
 
 });
 
@@ -684,5 +686,121 @@ function generateRandomKey(){
     }
 
     document.getElementById("secretKey").value = key;
+}
+
+
+/* =====================================================
+   KEY EXPANSION
+===================================================== */
+
+function setupKeyExpansion(){
+
+    document
+        .getElementById("loadKeyExpansionBtn")
+        .addEventListener(
+            "click",
+            loadKeyExpansion
+        );
+}
+
+
+async function loadKeyExpansion(){
+
+    const secretKey =
+        document.getElementById("secretKey").value;
+
+    if(secretKey.trim() === ""){
+
+        alert("Please enter key first");
+
+        return;
+    }
+
+    const payload = {
+
+        key: secretKey,
+
+        key_choice: currentKeySize
+    };
+
+    try{
+
+        const response = await fetch(
+            "/api/key-expansion",
+            {
+
+                method: "POST",
+
+                headers: {
+
+                    "Content-Type":
+                        "application/json"
+                },
+
+                body: JSON.stringify(payload)
+            }
+        );
+
+        const result =
+            await response.json();
+
+        console.log(result);
+
+        renderKeyExpansion(result);
+
+    }catch(error){
+
+        console.error(error);
+
+        alert("Key Expansion Error");
+    }
+}
+
+function renderKeyExpansion(result){
+
+    const container =
+        document.getElementById(
+            "keyExpansionContainer"
+        );
+
+    container.innerHTML = "";
+
+    if(result.status !== "success"){
+
+        container.innerHTML =
+            `<div class="error-box">
+                ${result.message}
+            </div>`;
+
+        return;
+    }
+
+    result.key_schedule.forEach(roundKey => {
+
+        const card =
+            document.createElement("div");
+
+        card.className =
+            "round-card";
+
+        card.innerHTML = `
+
+            <div class="round-title">
+
+                Round ${roundKey.round}
+
+            </div>
+
+            <div class="matrix-wrapper">
+
+                ${renderMatrix(
+                    roundKey.key_hex
+                )}
+
+            </div>
+        `;
+
+        container.appendChild(card);
+    });
 }
 

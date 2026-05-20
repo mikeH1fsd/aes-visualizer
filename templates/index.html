@@ -320,14 +320,21 @@
             Round View
 
         </button>
-
+	
         <button class="tab-btn"
                 data-tab="blockView">
 
             Block View
 
         </button>
+	
+	<button class="tab-btn"
+        	data-tab="keyExpansionView">
 
+    		Key Expansion
+
+	</button>
+	
         <button class="tab-btn"
                 data-tab="aboutView">
 
@@ -383,6 +390,29 @@
 
     </div>
 
+	<!-- =========================
+	     KEY EXPANSION VIEW
+	========================= -->
+
+	<div id="keyExpansionView"
+	     class="tab-content">
+
+	    <div class="key-expansion-toolbar">
+
+		<button id="loadKeyExpansionBtn"
+		        class="main-btn">
+
+		    Generate Key Schedule
+
+		</button>
+
+	    </div>
+
+	    <div id="keyExpansionContainer"></div>
+
+	</div>
+
+
     <!-- =========================
          ABOUT VIEW
     ========================== -->
@@ -395,7 +425,16 @@
             <h2>
                 Advanced Encryption Standard (AES)
             </h2>
-
+            
+            <p>
+            	Le Hoang Ngoc _ N23DCAT048</p>
+            	<p>Vuong Truong Nguyen _ N23DCAT051</p>
+            	<p>Do Thanh Liem _ N23DCAT041</p>
+            	
+            	<p>Mon hoc mat ma hoc co so - Giao vien huong dan "Nguyen Hoang Thanh"
+                
+            </p>
+            
             <p>
                 AES is a symmetric encryption algorithm
                 standardized by NIST.
@@ -420,6 +459,8 @@
                 <li>Round-by-round visualization</li>
 
                 <li>Block chaining visualization</li>
+                <li>Key Expansion visualization</li>
+
 
             </ul>
 

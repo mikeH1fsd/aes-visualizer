@@ -352,3 +352,44 @@ def process_aes_verbose_json(json_input):
         return json.dumps(final_result, indent=4, ensure_ascii=False)
     except Exception as e: return json.dumps({"status": "error", "message": str(e)}, indent=4)
 
+
+
+def process_key_expansion_json(json_input):
+    """
+    Đầu vào: JSON chứa 'key' và 'key_choice' ('1'=128, '2'=192, '3'=256)
+    Đầu ra: JSON chứa danh sách các Round Keys (Key Schedule)
+    """
+    try:
+        params = json.loads(json_input)
+        key_str = params.get('key', '')
+        k_choice = str(params.get('key_choice', '1'))
+        
+        # Xác định độ dài yêu cầu
+        required_len = 16 if k_choice == '1' else 24 if k_choice == '2' else 32 if k_choice == '3' else 0
+        key_bytes = key_str.encode()
+        
+        if len(key_bytes) != required_len:
+            return json.dumps({
+                "status": "error", 
+                "message": f"Độ dài khóa không hợp lệ. Cần {required_len} bytes cho AES-{required_len*8}."
+            }, indent=4)
+
+        # Thực hiện mở rộng khóa
+        round_keys = key_expansion(key_bytes)
+        
+        # Định dạng kết quả
+        result = {
+            "status": "success",
+            "aes_mode": f"AES-{required_len*8}",
+            "original_key_hex": key_bytes.hex().upper(),
+            "total_rounds": len(round_keys) - 1,
+            "key_schedule": [
+                {"round": i, "key_hex": bytes(rk).hex().upper()} 
+                for i, rk in enumerate(round_keys)
+            ]
+        }
+        return json.dumps(result, indent=4, ensure_ascii=False)
+        
+    except Exception as e:
+        return json.dumps({"status": "error", "message": str(e)}, indent=4)
+
